@@ -21,10 +21,8 @@ std::string number_to_bits( long int numero, int numero_qubits ){
 
 Circuit::Circuit(int numero_qubits){
   this->numero_qubits = numero_qubits;
-
-  for(long int i; i<std::pow(2,numero_qubits); i++){
+  for(long int i=0; i<std::pow(2,numero_qubits); i++){
     std::string str = number_to_bits(i, numero_qubits);
-    
     (this->estados).push_back(str);
     if(i==0){
       (this->amplitudes).push_back(1.0);  
@@ -32,11 +30,10 @@ Circuit::Circuit(int numero_qubits){
       (this->amplitudes).push_back(0.0);
     };
   };
-
 };
 
 
-void Circuit::set_estado_inicial(const std::vector<double> vector_estado){
+void Circuit::set_estado_inicial(const std::vector< std::complex<double> > vector_estado){
   int aux = 0;
   for(auto string_estado: this->estados){
     int index = std::stoi(string_estado, nullptr, 2);
@@ -46,16 +43,15 @@ void Circuit::set_estado_inicial(const std::vector<double> vector_estado){
 };
 
  
-std::vector<double> Circuit::obtener_estado(){
+std::vector< std::complex<double> > Circuit::obtener_estado(){
   //Crear estado de 2^n
-  std::vector<double> vector_estado(this->numero_qubits, 0.0);
+  std::vector< std::complex<double> > vector_estado(this->numero_qubits, 0.0);
 
   //Iterar sobre los estados para obtener el indice y mover la probabilidad al estado
   for( auto string_estado: this->estados ){
     int index = std::stoi( string_estado, nullptr, 2 );
     vector_estado[index] = (this->amplitudes).at(index);
   };
-
   return vector_estado;
 };
 
@@ -75,4 +71,6 @@ void Circuit::eliminar_operador(const int indice){
 void Circuit::mostrar_circuito(){
   std::cout << "wop" << std::endl;
 };
+
+void Circuit::ejecutar_circuit(){};
 
