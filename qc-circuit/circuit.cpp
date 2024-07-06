@@ -65,16 +65,18 @@ void Circuit::eliminar_operador(const int indice){
 
 
 void Circuit::mostrar_circuito(){
-  std::cout << "wop" << std::endl;
+  for( auto it= this->base_computacional.begin(); it!=this->base_computacional.end(); it++ ){
+    std::cout << it->first << " " << it->second << std::endl;
+  }
+  //std::cout << "wop" << std::endl;
 };
 
 void Circuit::ejecutar_circuito(){
   //El operador se aplica a cada estado de la base computacional
   for( auto op: (this->queue_operadores) ){
-     
-    for( auto it=(this->base_computacional).begin(); it!=(this->base_computacional).end(); it++ ){
-      auto resultado = op->aplicar_operador( it->first, it->second );
-    };
-  }
+    std::cout << "ejecutando operador" << std::endl;
+    auto resultado = op->aplicar_operador( this->base_computacional );
+    this->base_computacional = resultado;
+  };
 };
 
