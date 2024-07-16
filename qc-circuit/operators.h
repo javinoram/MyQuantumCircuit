@@ -23,7 +23,7 @@ class OneQubit: public Operator{
   public:
     OneQubit( const int indice );
     virtual ~OneQubit();
-    virtual std::complex<double> accion( const char flag, std::complex<double> prob1, std::complex<double> prob2 )=0;
+    virtual std::tuple<std::complex<double>, std::complex<double>> accion( const char flag, std::complex<double> prob1)=0;
     virtual std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs )=0;
 };
 
@@ -48,7 +48,7 @@ class RxGate: public OneQubit{
   public:
     RxGate( const int indice, const double angle );
     ~RxGate();
-    std::complex<double> accion( const char flag, std::complex<double> prob1, std::complex<double> prob2 ) final;
+    std::tuple<std::complex<double>, std::complex<double>> accion( const char flag, std::complex<double> prob1) final;
     std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
 
   
@@ -60,7 +60,7 @@ class RyGate: public OneQubit{
   public:
     RyGate( const int indice, const double angle );
     ~RyGate();
-    std::complex<double> accion(const char flag, std::complex<double> prob1, std::complex<double> prob2) final;
+    std::tuple<std::complex<double>, std::complex<double>> accion(const char flag, std::complex<double> prob1) final;
     std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
 
 };
@@ -71,7 +71,7 @@ class RzGate: public OneQubit{
   public:
     RzGate( const int indice, const double angle );
     ~RzGate();
-    std::complex<double> accion(const char flag, std::complex<double> prob1, std::complex<double> prob2) final;
+    std::tuple<std::complex<double>, std::complex<double>> accion(const char flag, std::complex<double> prob1) final;
     std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
 };
 
@@ -79,7 +79,7 @@ class HGate: public OneQubit{
   public:
     HGate( const int indice );
     ~HGate();
-    std::complex<double> accion(const char flag, std::complex<double> prob1, std::complex<double> prob2) final;
+  std::tuple<std::complex<double>, std::complex<double>> accion(const char flag, std::complex<double> prob1) final;
     std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
 };
 
