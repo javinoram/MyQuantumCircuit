@@ -4,6 +4,15 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <complex>
+
+
+std::ostream & operator <<(std::ostream &os, const std::map<std::string, std::complex<double>> &m){
+    for (const auto &p : m){
+        os << p.first << ": " << p.second << std::endl;
+    }
+    return os;
+}
 
 
 std::string number_to_bits( long int numero, int numero_qubits ){
@@ -76,6 +85,7 @@ void Circuit::ejecutar_circuito(){
   for( auto op: (this->queue_operadores) ){
     std::cout << "ejecutando operador" << std::endl;
     auto resultado = op->aplicar_operador( this->base_computacional );
+    std::cout << resultado << std::endl;
     this->base_computacional = resultado;
   };
 };
