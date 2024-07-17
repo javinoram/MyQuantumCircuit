@@ -99,6 +99,14 @@ class ZGate: public OneQubit{
     std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
 };
 
+class YGate: public OneQubit{
+  public:
+    YGate( const int indice );
+    ~YGate();
+    std::tuple<std::complex<double>, std::complex<double>> accion(const char flag, std::complex<double> prob1) final;
+    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
+};
+
 
 //Compuerta condicionales
 class CnotGate: public TwoQubit{
