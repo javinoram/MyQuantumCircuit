@@ -79,9 +79,17 @@ class HGate: public OneQubit{
   public:
     HGate( const int indice );
     ~HGate();
-  std::tuple<std::complex<double>, std::complex<double>> accion(const char flag, std::complex<double> prob1) final;
+    std::tuple<std::complex<double>, std::complex<double>> accion(const char flag, std::complex<double> prob1) final;
     std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
 };
+
+class XGate: public OneQubit{
+  public:
+    XGate( const int indice );
+    ~XGate();
+    std::tuple<std::complex<double>, std::complex<double>> accion(const char flag, std::complex<double> prob1) final;
+    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
+}; 
 
 
 //Compuerta condicionales

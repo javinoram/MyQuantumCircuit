@@ -182,7 +182,7 @@ HGate::HGate( const int indice ): OneQubit(indice){};
 HGate::~HGate(){std::cout<<"Destructor Hadamard"<<std::endl;};
 
 std::tuple<std::complex<double>, std::complex<double>> HGate::accion(const char flag, std::complex<double> prob1){
-  std::complex<double> i(0,1);
+  //std::complex<double> i(0,1);
   if( flag=='0' ){
     return { (1.0/sqrt(2.0))*prob1, ( 1.0/sqrt(2.0) )*prob1 };
   };
@@ -219,6 +219,50 @@ std::map<std::string, std::complex<double>> HGate::aplicar_operador(std::map<std
   return new_probs;
 };
 
+
+//
+//
+//X GATE
+//
+//
+XGate::XGate( const int indice ): OneQubit(indice){};
+
+XGate::~XGate(){std::cout<<"Destructor Not gate"<<std::endl;};
+
+std::tuple<std::complex<double>, std::complex<double>> XGate::accion( const char flag, std::complex<double> prob1 ){
+  return {0.0, prob1};
+};
+
+std::map<std::string, std::complex<double>> XGate::aplicar_operador(std::map<std::string, std::complex<double>> dict_probs){
+  std::map<std::string, std::complex<double>> new_probs;
+  int index_accion = OneQubit::indice;
+
+  for( auto it=dict_probs.begin(); it!=dict_probs.end(); it++ ){
+    std::string estado_2 = it->first;
+    estado_2[index_accion] = ( (it->first)[index_accion]=='0' ) ? '1' : '0';
+    std::complex<double> p1 = it->second;
+    std::complex<double> p2 = dict_probs[ estado_2 ];
+
+    auto tuple_probs = accion( (it->first)[index_accion], p1);
+    p1 = std::get<0>(tuple_probs);
+    p2 = std::get<1>(tuple_probs);
+     
+    auto it_estado1 = new_probs.find( it->first );
+    if( it_estado1 != new_probs.end() ){
+      new_probs[ it->first ] = (new_probs[ it->first ]) + p1;
+    }else{
+      new_probs[ it->first ] = p1;
+    };
+
+    auto it_estado2 = new_probs.find( estado_2 );
+    if( it_estado2 != new_probs.end() ){
+      new_probs[ estado_2 ] = (new_probs[ estado_2 ]) + p2;
+    }else{
+      new_probs[estado_2] = p2;
+    };
+  };
+  return new_probs;
+};
 
 
 //Metodos de las clases hijas de la clase TwoQubit
