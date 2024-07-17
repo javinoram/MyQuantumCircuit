@@ -118,4 +118,16 @@ class CnotGate: public TwoQubit{
       accion(const char flag1, const char flag2, std::complex<double> prob) final;
     std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
 };
+
+class CZGate: public TwoQubit{
+  public:
+   CZGate( const int indice1, const int indice2 );
+    ~CZGate();
+    std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> >
+      accion(const char flag1, const char flag2, std::complex<double> prob) final;
+    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
+};
+
+
+
 #endif
