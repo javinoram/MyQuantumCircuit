@@ -17,8 +17,8 @@ OneQubit::OneQubit( const int indice ){
 OneQubit::~OneQubit(){ std::cout<<"Destructor OneQubit"<<std::endl; };
 
 TwoQubit::TwoQubit( const int indice1, const int indice2 ){
-  (this->indice_1) = indice_1;
-  (this->indice_2) = indice_2;
+  (this->indice_1) = indice1;
+  (this->indice_2) = indice2;
 };
 
 TwoQubit::~TwoQubit(){ std::cout<<"Destructor TwoQubit"<<std::endl; };
@@ -366,7 +366,76 @@ std::map<std::string, std::complex<double>> YGate::aplicar_operador(std::map<std
 
 //Metodos de las clases hijas de la clase TwoQubit
 CnotGate::CnotGate(const int indice1, const int indice2): TwoQubit(indice1, indice2){};
+
 CnotGate::~CnotGate(){std::cout<<"Destructor Cnot gate"<<std::endl;};
-std::string CnotGate::accion(std::string estado, std::complex<double> prob){return estado;};
-std::map<std::string, std::complex<double>> CnotGate::aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ){return dict_probs;};
+
+std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> > 
+  CnotGate::accion(const char flag1, const char flag2,  std::complex<double> prob){
+  if( flag1 == '0' && flag2 == '0' ){
+    return {prob, 0.0, 0.0, 0.0};
+  }else if( flag1 == '0' and flag2 == '1' ){
+    return {0.0, prob, 0.0, 0.0};
+  }else if( flag1 == '1' && flag2 == '0' ){
+    return {0.0, 0.0, 0.0, prob};
+  }; 
+  return {0.0, 0.0, prob, 0.0};
+};
+
+std::map<std::string, std::complex<double>> CnotGate::aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ){
+  //iterar sobre estados
+  //tomar los 4 estados que representan 00 01 10 11 junto a sus probabilidades
+  std::map<std::string, std::complex<double>> new_probs;
+  int index_accion_1 = TwoQubit::indice_1;
+  int index_accion_2 = TwoQubit::indice_2;
+  
+  for( auto it=dict_probs.begin(); it!=dict_probs.end(); it++ ){
+    //4 estados basales
+    auto tuple_probs = accion( (it->first)[index_accion_1], (it->first)[index_accion_2], it->second);
+
+    //check
+    std::string estado = it->first;
+    estado[index_accion_1] = '0';
+    estado[index_accion_2] = '0';
+    std::complex<double> p = std::get<0>(tuple_probs);
+    auto it_estado2 = new_probs.find( estado );
+    if( it_estado2 != new_probs.end() ){
+      new_probs[ estado ] = (new_probs[ estado ]) + p;
+    }else{
+      new_probs[ estado ] = p;
+    };
+
+    estado[index_accion_1] = '0';
+    estado[index_accion_2] = '1';
+    p = std::get<1>(tuple_probs);
+    it_estado2 = new_probs.find( estado );
+    if( it_estado2 != new_probs.end() ){
+      new_probs[ estado ] = (new_probs[ estado ]) + p;
+    }else{
+      new_probs[ estado ] = p;
+    };
+
+    estado[index_accion_1] = '1';
+    estado[index_accion_2] = '0';
+    p = std::get<2>(tuple_probs);
+    it_estado2 = new_probs.find( estado );
+    if( it_estado2 != new_probs.end() ){
+      new_probs[ estado ] = (new_probs[ estado ]) + p;
+    }else{
+      new_probs[ estado ] = p;
+    };
+
+    estado[index_accion_1] = '1';
+    estado[index_accion_2] = '1';
+    p = std::get<3>(tuple_probs);
+    it_estado2 = new_probs.find( estado );
+    if( it_estado2 != new_probs.end() ){
+      new_probs[ estado ] = (new_probs[ estado]) + p;
+    }else{
+      new_probs[ estado ] = p;
+    };
+
+
+  };
+  return new_probs;
+};
 

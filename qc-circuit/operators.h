@@ -35,7 +35,8 @@ class TwoQubit: public Operator{
   public:
     TwoQubit( const int indice1, const int indice2 );
     virtual ~TwoQubit();
-    virtual std::string accion( std::string estado, std::complex<double> prob )=0;
+    virtual std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> > 
+      accion(const char flag1, const char flag2, std::complex<double> prob)=0;
     virtual std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs )=0; 
 };
 
@@ -113,7 +114,8 @@ class CnotGate: public TwoQubit{
   public:
    CnotGate( const int indice1, const int indice2 );
     ~CnotGate();
-    std::string accion( std::string estado, std::complex<double> prob ) final;
+    std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> >
+      accion(const char flag1, const char flag2, std::complex<double> prob) final;
     std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
 };
 #endif
