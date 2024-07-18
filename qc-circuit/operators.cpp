@@ -133,6 +133,7 @@ std::map<std::string, std::complex<double>> RyGate::aplicar_operador(std::map<st
 RzGate::RzGate( const int indice, const double angle ): OneQubit(indice){
   (this->angle) = angle;
 };
+
 RzGate::~RzGate(){std::cout<<"Destructor RzGate"<<std::endl;};
 std::tuple<std::complex<double>, std::complex<double>> RzGate::accion(const char flag, std::complex<double> prob1){
   std::complex<double> i(0,1);
@@ -141,6 +142,7 @@ std::tuple<std::complex<double>, std::complex<double>> RzGate::accion(const char
   };
   return { 0.0, prob1*exp( i*(this->angle)*0.5 )};
 };
+
 std::map<std::string, std::complex<double>> RzGate::aplicar_operador(std::map<std::string, std::complex<double>> dict_probs){
   std::map<std::string, std::complex<double>> new_probs;
   int index_accion = OneQubit::indice;
@@ -613,7 +615,7 @@ std::map<std::string, std::complex<double>> CYGate::aplicar_operador( std::map<s
 //
 CHGate::CHGate(const int indice1, const int indice2): TwoQubit(indice1, indice2){};
 
-CHGate::~CHGate(){std::cout<<"Destructor CY gate"<<std::endl;};
+CHGate::~CHGate(){std::cout<<"Destructor CH gate"<<std::endl;};
 
 std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> > 
   CHGate::accion(const char flag1, const char flag2,  std::complex<double> prob){
@@ -696,7 +698,7 @@ CRXGate::CRXGate(const int indice1, const int indice2, const double angle): TwoQ
   this->angle = angle;
 };
 
-CRXGate::~CRXGate(){std::cout<<"Destructor CY gate"<<std::endl;};
+CRXGate::~CRXGate(){std::cout<<"Destructor CRX gate"<<std::endl;};
 
 std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> > 
   CRXGate::accion(const char flag1, const char flag2,  std::complex<double> prob){
@@ -783,7 +785,7 @@ CRYGate::CRYGate(const int indice1, const int indice2, const double angle): TwoQ
   this->angle = angle;
 };
 
-CRYGate::~CRYGate(){std::cout<<"Destructor CY gate"<<std::endl;};
+CRYGate::~CRYGate(){std::cout<<"Destructor CRY gate"<<std::endl;};
 
 std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> > 
   CRYGate::accion(const char flag1, const char flag2,  std::complex<double> prob){
@@ -864,18 +866,88 @@ std::map<std::string, std::complex<double>> CRYGate::aplicar_operador( std::map<
 
 
 
+//
+//
+//CRZ GATE
+//
+//
+CRZGate::CRZGate(const int indice1, const int indice2, const double angle): TwoQubit(indice1, indice2){
+  this->angle = angle;
+};
+
+CRZGate::~CRZGate(){std::cout<<"Destructor CRZ gate"<<std::endl;};
+
+std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> > 
+  CRZGate::accion(const char flag1, const char flag2,  std::complex<double> prob){
+  std::complex<double> i(0,1);
+  if( flag1 == '0' && flag2 == '0' ){
+    return {prob, 0.0, 0.0, 0.0};
+  }else if( flag1 == '0' and flag2 == '1' ){
+    return {0.0, prob, 0.0, 0.0};
+  }else if( flag1 == '1' && flag2 == '0' ){
+    std::complex<double> val1 = prob*exp( -i*(this->angle)*0.5 );
+    std::complex<double> val2 = 0.0;
+    return {0.0, 0.0, val1, val2};
+  }; 
+  std::complex<double> val1 = 0.0;
+  std::complex<double> val2 = prob*exp( i*(this->angle)*0.5 );
+  return {0.0, 0.0, val1, val2};
+};
+
+std::map<std::string, std::complex<double>> CRZGate::aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ){
+  //iterar sobre estados
+  //tomar los 4 estados que representan 00 01 10 11 junto a sus probabilidades
+  std::map<std::string, std::complex<double>> new_probs;
+  int index_accion_1 = TwoQubit::indice_1;
+  int index_accion_2 = TwoQubit::indice_2;
+  
+  for( auto it=dict_probs.begin(); it!=dict_probs.end(); it++ ){
+    //4 estados basales
+    auto tuple_probs = accion( (it->first)[index_accion_1], (it->first)[index_accion_2], it->second);
+
+    //check
+    std::string estado = it->first;
+    estado[index_accion_1] = '0';
+    estado[index_accion_2] = '0';
+    std::complex<double> p = std::get<0>(tuple_probs);
+    auto it_estado2 = new_probs.find( estado );
+    if( it_estado2 != new_probs.end() ){
+      new_probs[ estado ] = (new_probs[ estado ]) + p;
+    }else{
+      new_probs[ estado ] = p;
+    };
+
+    estado[index_accion_1] = '0';
+    estado[index_accion_2] = '1';
+    p = std::get<1>(tuple_probs);
+    it_estado2 = new_probs.find( estado );
+    if( it_estado2 != new_probs.end() ){
+      new_probs[ estado ] = (new_probs[ estado ]) + p;
+    }else{
+      new_probs[ estado ] = p;
+    };
+
+    estado[index_accion_1] = '1';
+    estado[index_accion_2] = '0';
+    p = std::get<2>(tuple_probs);
+    it_estado2 = new_probs.find( estado );
+    if( it_estado2 != new_probs.end() ){
+      new_probs[ estado ] = (new_probs[ estado ]) + p;
+    }else{
+      new_probs[ estado ] = p;
+    };
+
+    estado[index_accion_1] = '1';
+    estado[index_accion_2] = '1';
+    p = std::get<3>(tuple_probs);
+    it_estado2 = new_probs.find( estado );
+    if( it_estado2 != new_probs.end() ){
+      new_probs[ estado ] = (new_probs[ estado]) + p;
+    }else{
+      new_probs[ estado ] = p;
+    };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+  };
+  return new_probs;
+};

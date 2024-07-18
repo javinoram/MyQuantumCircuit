@@ -170,6 +170,18 @@ private:
 };
 
 
+class CRZGate: public TwoQubit{
+private:
+    double angle;
+  public:
+    CRZGate( const int indice1, const int indice2, const double angle );
+    ~CRZGate();
+    std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> >
+      accion(const char flag1, const char flag2, std::complex<double> prob) final;
+    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
+};
+
+
 
 
 #endif
