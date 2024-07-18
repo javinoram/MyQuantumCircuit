@@ -24,7 +24,7 @@ class OneQubit: public Operator{
     OneQubit( const int indice );
     virtual ~OneQubit();
     virtual std::tuple<std::complex<double>, std::complex<double>> accion( const char flag, std::complex<double> prob1)=0;
-    virtual std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs )=0;
+    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
 };
 
 
@@ -37,7 +37,7 @@ class TwoQubit: public Operator{
     virtual ~TwoQubit();
     virtual std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> > 
       accion(const char flag1, const char flag2, std::complex<double> prob)=0;
-    virtual std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs )=0; 
+    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final; 
 };
 
 
@@ -50,9 +50,6 @@ class RxGate: public OneQubit{
     RxGate( const int indice, const double angle );
     ~RxGate();
     std::tuple<std::complex<double>, std::complex<double>> accion( const char flag, std::complex<double> prob1) final;
-    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
-
-  
 };
 
 class RyGate: public OneQubit{
@@ -62,8 +59,6 @@ class RyGate: public OneQubit{
     RyGate( const int indice, const double angle );
     ~RyGate();
     std::tuple<std::complex<double>, std::complex<double>> accion(const char flag, std::complex<double> prob1) final;
-    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
-
 };
 
 class RzGate: public OneQubit{
@@ -73,7 +68,6 @@ class RzGate: public OneQubit{
     RzGate( const int indice, const double angle );
     ~RzGate();
     std::tuple<std::complex<double>, std::complex<double>> accion(const char flag, std::complex<double> prob1) final;
-    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
 };
 
 class HGate: public OneQubit{
@@ -81,7 +75,6 @@ class HGate: public OneQubit{
     HGate( const int indice );
     ~HGate();
     std::tuple<std::complex<double>, std::complex<double>> accion(const char flag, std::complex<double> prob1) final;
-    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
 };
 
 class XGate: public OneQubit{
@@ -89,7 +82,6 @@ class XGate: public OneQubit{
     XGate( const int indice );
     ~XGate();
     std::tuple<std::complex<double>, std::complex<double>> accion(const char flag, std::complex<double> prob1) final;
-    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
 };
 
 class ZGate: public OneQubit{
@@ -97,7 +89,6 @@ class ZGate: public OneQubit{
     ZGate( const int indice );
     ~ZGate();
     std::tuple<std::complex<double>, std::complex<double>> accion(const char flag, std::complex<double> prob1) final;
-    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
 };
 
 class YGate: public OneQubit{
@@ -105,7 +96,6 @@ class YGate: public OneQubit{
     YGate( const int indice );
     ~YGate();
     std::tuple<std::complex<double>, std::complex<double>> accion(const char flag, std::complex<double> prob1) final;
-    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
 };
 
 
@@ -116,7 +106,6 @@ class CnotGate: public TwoQubit{
     ~CnotGate();
     std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> >
       accion(const char flag1, const char flag2, std::complex<double> prob) final;
-    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
 };
 
 class CZGate: public TwoQubit{
@@ -125,7 +114,6 @@ class CZGate: public TwoQubit{
     ~CZGate();
     std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> >
       accion(const char flag1, const char flag2, std::complex<double> prob) final;
-    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
 };
 
 class CYGate: public TwoQubit{
@@ -134,7 +122,6 @@ class CYGate: public TwoQubit{
     ~CYGate();
     std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> >
       accion(const char flag1, const char flag2, std::complex<double> prob) final;
-    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
 };
 
 class CHGate: public TwoQubit{
@@ -143,7 +130,6 @@ class CHGate: public TwoQubit{
     ~CHGate();
     std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> >
       accion(const char flag1, const char flag2, std::complex<double> prob) final;
-    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
 };
 
 class CRXGate: public TwoQubit{
@@ -154,7 +140,6 @@ private:
     ~CRXGate();
     std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> >
       accion(const char flag1, const char flag2, std::complex<double> prob) final;
-    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
 };
 
 
@@ -166,7 +151,6 @@ private:
     ~CRYGate();
     std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> >
       accion(const char flag1, const char flag2, std::complex<double> prob) final;
-    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
 };
 
 
@@ -178,7 +162,6 @@ private:
     ~CRZGate();
     std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> >
       accion(const char flag1, const char flag2, std::complex<double> prob) final;
-    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
 };
 
 
