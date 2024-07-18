@@ -4,6 +4,8 @@ just a bump of classes that represent the quantum circuit and a toy example.
 
 The main reason is learn and apply concepts of quantum computing and c++ OOP
 
-## How to use the code
-The *g++ -std=c++14 -Wall files.cpp -o aux.out*
+## Execute the code
+To execute your circuit, you must edit the makefile to use your file.
+
+After that, you just use *make* and the compiled file will be created.
 
