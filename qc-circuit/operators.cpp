@@ -774,6 +774,102 @@ std::map<std::string, std::complex<double>> CRXGate::aplicar_operador( std::map<
 };
 
 
+//
+//
+//CRY GATE
+//
+//
+CRYGate::CRYGate(const int indice1, const int indice2, const double angle): TwoQubit(indice1, indice2){
+  this->angle = angle;
+};
+
+CRYGate::~CRYGate(){std::cout<<"Destructor CY gate"<<std::endl;};
+
+std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> > 
+  CRYGate::accion(const char flag1, const char flag2,  std::complex<double> prob){
+  std::complex<double> i(0,1);
+  if( flag1 == '0' && flag2 == '0' ){
+    return {prob, 0.0, 0.0, 0.0};
+  }else if( flag1 == '0' and flag2 == '1' ){
+    return {0.0, prob, 0.0, 0.0};
+  }else if( flag1 == '1' && flag2 == '0' ){
+    std::complex<double> val1 = prob*cos( (this->angle)*0.5 );
+    std::complex<double> val2 = prob*cos( (this->angle)*0.5 );
+    return {0.0, 0.0, val1, val2};
+  }; 
+  std::complex<double> val1 = -i*prob*sin( (this->angle)*0.5 );
+  std::complex<double> val2 = i*prob*sin( (this->angle)*5 );
+  return {0.0, 0.0, val1, val2};
+};
+
+std::map<std::string, std::complex<double>> CRYGate::aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ){
+  //iterar sobre estados
+  //tomar los 4 estados que representan 00 01 10 11 junto a sus probabilidades
+  std::map<std::string, std::complex<double>> new_probs;
+  int index_accion_1 = TwoQubit::indice_1;
+  int index_accion_2 = TwoQubit::indice_2;
+  
+  for( auto it=dict_probs.begin(); it!=dict_probs.end(); it++ ){
+    //4 estados basales
+    auto tuple_probs = accion( (it->first)[index_accion_1], (it->first)[index_accion_2], it->second);
+
+    //check
+    std::string estado = it->first;
+    estado[index_accion_1] = '0';
+    estado[index_accion_2] = '0';
+    std::complex<double> p = std::get<0>(tuple_probs);
+    auto it_estado2 = new_probs.find( estado );
+    if( it_estado2 != new_probs.end() ){
+      new_probs[ estado ] = (new_probs[ estado ]) + p;
+    }else{
+      new_probs[ estado ] = p;
+    };
+
+    estado[index_accion_1] = '0';
+    estado[index_accion_2] = '1';
+    p = std::get<1>(tuple_probs);
+    it_estado2 = new_probs.find( estado );
+    if( it_estado2 != new_probs.end() ){
+      new_probs[ estado ] = (new_probs[ estado ]) + p;
+    }else{
+      new_probs[ estado ] = p;
+    };
+
+    estado[index_accion_1] = '1';
+    estado[index_accion_2] = '0';
+    p = std::get<2>(tuple_probs);
+    it_estado2 = new_probs.find( estado );
+    if( it_estado2 != new_probs.end() ){
+      new_probs[ estado ] = (new_probs[ estado ]) + p;
+    }else{
+      new_probs[ estado ] = p;
+    };
+
+    estado[index_accion_1] = '1';
+    estado[index_accion_2] = '1';
+    p = std::get<3>(tuple_probs);
+    it_estado2 = new_probs.find( estado );
+    if( it_estado2 != new_probs.end() ){
+      new_probs[ estado ] = (new_probs[ estado]) + p;
+    }else{
+      new_probs[ estado ] = p;
+    };
+
+
+  };
+  return new_probs;
+};
+
+
+
+
+
+
+
+
+
+
+
 
 
 
