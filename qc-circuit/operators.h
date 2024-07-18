@@ -35,7 +35,8 @@ class TwoQubit: public Operator{
   public:
     TwoQubit( const int indice1, const int indice2 );
     virtual ~TwoQubit();
-    virtual std::string accion( std::string estado, std::complex<double> prob )=0;
+    virtual std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> > 
+      accion(const char flag1, const char flag2, std::complex<double> prob)=0;
     virtual std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs )=0; 
 };
 
@@ -111,9 +112,76 @@ class YGate: public OneQubit{
 //Compuerta condicionales
 class CnotGate: public TwoQubit{
   public:
-   CnotGate( const int indice1, const int indice2 );
+    CnotGate( const int indice1, const int indice2 );
     ~CnotGate();
-    std::string accion( std::string estado, std::complex<double> prob ) final;
+    std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> >
+      accion(const char flag1, const char flag2, std::complex<double> prob) final;
     std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
 };
+
+class CZGate: public TwoQubit{
+  public:
+    CZGate( const int indice1, const int indice2 );
+    ~CZGate();
+    std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> >
+      accion(const char flag1, const char flag2, std::complex<double> prob) final;
+    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
+};
+
+class CYGate: public TwoQubit{
+  public:
+    CYGate( const int indice1, const int indice2 );
+    ~CYGate();
+    std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> >
+      accion(const char flag1, const char flag2, std::complex<double> prob) final;
+    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
+};
+
+class CHGate: public TwoQubit{
+  public:
+    CHGate( const int indice1, const int indice2 );
+    ~CHGate();
+    std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> >
+      accion(const char flag1, const char flag2, std::complex<double> prob) final;
+    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
+};
+
+class CRXGate: public TwoQubit{
+private:
+    double angle;
+  public:
+    CRXGate( const int indice1, const int indice2, const double angle );
+    ~CRXGate();
+    std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> >
+      accion(const char flag1, const char flag2, std::complex<double> prob) final;
+    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
+};
+
+
+class CRYGate: public TwoQubit{
+private:
+    double angle;
+  public:
+    CRYGate( const int indice1, const int indice2, const double angle );
+    ~CRYGate();
+    std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> >
+      accion(const char flag1, const char flag2, std::complex<double> prob) final;
+    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
+};
+
+
+class CRZGate: public TwoQubit{
+private:
+    double angle;
+  public:
+    CRZGate( const int indice1, const int indice2, const double angle );
+    ~CRZGate();
+    std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> >
+      accion(const char flag1, const char flag2, std::complex<double> prob) final;
+    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
+};
+
+
+
+
 #endif
