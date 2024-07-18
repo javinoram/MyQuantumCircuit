@@ -112,7 +112,7 @@ class YGate: public OneQubit{
 //Compuerta condicionales
 class CnotGate: public TwoQubit{
   public:
-   CnotGate( const int indice1, const int indice2 );
+    CnotGate( const int indice1, const int indice2 );
     ~CnotGate();
     std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> >
       accion(const char flag1, const char flag2, std::complex<double> prob) final;
@@ -121,7 +121,7 @@ class CnotGate: public TwoQubit{
 
 class CZGate: public TwoQubit{
   public:
-   CZGate( const int indice1, const int indice2 );
+    CZGate( const int indice1, const int indice2 );
     ~CZGate();
     std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> >
       accion(const char flag1, const char flag2, std::complex<double> prob) final;
@@ -130,7 +130,7 @@ class CZGate: public TwoQubit{
 
 class CYGate: public TwoQubit{
   public:
-   CYGate( const int indice1, const int indice2 );
+    CYGate( const int indice1, const int indice2 );
     ~CYGate();
     std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> >
       accion(const char flag1, const char flag2, std::complex<double> prob) final;
@@ -139,8 +139,19 @@ class CYGate: public TwoQubit{
 
 class CHGate: public TwoQubit{
   public:
-   CHGate( const int indice1, const int indice2 );
+    CHGate( const int indice1, const int indice2 );
     ~CHGate();
+    std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> >
+      accion(const char flag1, const char flag2, std::complex<double> prob) final;
+    std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
+};
+
+class CRXGate: public TwoQubit{
+private:
+    double angle;
+  public:
+    CRXGate( const int indice1, const int indice2, const double angle );
+    ~CRXGate();
     std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> >
       accion(const char flag1, const char flag2, std::complex<double> prob) final;
     std::map<std::string, std::complex<double>> aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ) final;
