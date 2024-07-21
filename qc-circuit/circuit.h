@@ -24,6 +24,7 @@ class Circuit {
     void eliminar_operador( const int indice );
     void set_estado_inicial( const std::vector< std::complex<double> > vector_estado );
     void mostrar_circuito();
+    void mostrar_estado();
 };
 
 #endif

@@ -1,6 +1,7 @@
 #include "circuit.h"
 #include "operators.h"
 #include <cmath>
+#include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
@@ -51,14 +52,17 @@ void Circuit::set_estado_inicial(const std::vector< std::complex<double> > vecto
 
  
 std::vector< std::complex<double> > Circuit::obtener_estado(){
-  std::vector< std::complex<double> > vector_estado(this->numero_qubits, 0.0);
-  
+  std::vector< std::complex<double> > vector_estado( std::pow(2, this->numero_qubits), 0.0);
   for( auto it=(this->base_computacional).begin(); it!=(this->base_computacional).end(); it++ ){
     int index = std::stoi( it->first, nullptr, 2 );
     vector_estado[index] = it->second;
   };
   return vector_estado;
 };
+
+void Circuit::mostrar_estado(){
+  std::cout << this->base_computacional << std::endl;
+}
 
 
 //Toda la informacion de las wires y el operador esta el objeto
@@ -74,18 +78,30 @@ void Circuit::eliminar_operador(const int indice){
 
 
 void Circuit::mostrar_circuito(){
-  for( auto it= this->base_computacional.begin(); it!=this->base_computacional.end(); it++ ){
-    std::cout << it->first << " " << it->second << std::endl;
-  }
-  //std::cout << "wop" << std::endl;
+  std::vector<std::string> v_circuito ( this->numero_qubits, "-" );
+
+  for( auto op: this->queue_operadores ){
+    int indice = op->get_index();
+    std::string base = std::string( (op->tag).length(), '-');
+    for( int i = 0; i<v_circuito.size(); i++ ){
+      if( i==indice ){
+        v_circuito[i] = v_circuito[i] + (op->tag) + "-";
+      }else{
+        v_circuito[i] = v_circuito[i] + base + "-";
+      };
+    };
+  };
+  
+  std::cout << "Circuit: " << std::endl;
+  for( std::string wire: v_circuito ){
+    std::cout << wire << std::endl;
+  };
 };
 
 void Circuit::ejecutar_circuito(){
   //El operador se aplica a cada estado de la base computacional
   for( auto op: (this->queue_operadores) ){
-    std::cout << "ejecutando operador" << std::endl;
     auto resultado = op->aplicar_operador( this->base_computacional );
-    std::cout << resultado << std::endl;
     this->base_computacional = resultado;
   };
 };
