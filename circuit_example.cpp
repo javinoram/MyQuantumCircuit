@@ -20,6 +20,7 @@ int main(){
 
   myqc.ejecutar_circuito();
   myqc.mostrar_circuito();
+  myqc.mostrar_estado();
 
   return 0;
 };

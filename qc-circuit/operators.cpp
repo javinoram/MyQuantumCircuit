@@ -1,7 +1,7 @@
 #include "operators.h"
-#include <iostream>
 #include <complex>
 #include <cmath>
+#include <string>
 #include <tuple>
 
 
@@ -14,7 +14,9 @@ OneQubit::OneQubit( const int indice ){
   (this->indice) = indice;
 };
 
-OneQubit::~OneQubit(){ std::cout<<"Destructor OneQubit"<<std::endl; };
+int OneQubit::get_index(){return this->indice;};
+
+OneQubit::~OneQubit(){ };
 
 std::map<std::string, std::complex<double>> OneQubit::aplicar_operador(std::map<std::string, std::complex<double>> dict_probs){
   std::map<std::string, std::complex<double>> new_probs;
@@ -49,17 +51,19 @@ std::map<std::string, std::complex<double>> OneQubit::aplicar_operador(std::map<
 
 
 TwoQubit::TwoQubit( const int indice1, const int indice2 ){
-  (this->indice_1) = indice1;
+  (this->indice) = indice1;
   (this->indice_2) = indice2;
 };
 
-TwoQubit::~TwoQubit(){ std::cout<<"Destructor TwoQubit"<<std::endl; };
+int TwoQubit::get_index(){return this->indice;};
+
+TwoQubit::~TwoQubit(){ };
 
 std::map<std::string, std::complex<double>> TwoQubit::aplicar_operador( std::map<std::string, std::complex<double>> dict_probs ){
   //iterar sobre estados
   //tomar los 4 estados que representan 00 01 10 11 junto a sus probabilidades
   std::map<std::string, std::complex<double>> new_probs;
-  int index_accion_1 = TwoQubit::indice_1;
+  int index_accion_1 = TwoQubit::indice;
   int index_accion_2 = TwoQubit::indice_2;
   
   for( auto it=dict_probs.begin(); it!=dict_probs.end(); it++ ){
@@ -121,9 +125,10 @@ std::map<std::string, std::complex<double>> TwoQubit::aplicar_operador( std::map
 //
 RyGate::RyGate( const int indice, const double angle ): OneQubit(indice){
   (this->angle) = angle;
+  Operator::tag = "RY(" + std::to_string(angle) + ")";
 };
 
-RyGate::~RyGate(){std::cout<<"Destructor RyGate"<<std::endl;};
+RyGate::~RyGate(){ };
 
 std::tuple<std::complex<double>, std::complex<double>> RyGate::accion(const char flag, std::complex<double> prob1){
   std::complex<double> i(0,1);
@@ -140,9 +145,11 @@ std::tuple<std::complex<double>, std::complex<double>> RyGate::accion(const char
 //
 RzGate::RzGate( const int indice, const double angle ): OneQubit(indice){
   (this->angle) = angle;
+  Operator::tag = "RZ(" + std::to_string(angle) + ")";
+
 };
 
-RzGate::~RzGate(){std::cout<<"Destructor RzGate"<<std::endl;};
+RzGate::~RzGate(){ };
 std::tuple<std::complex<double>, std::complex<double>> RzGate::accion(const char flag, std::complex<double> prob1){
   std::complex<double> i(0,1);
   if( flag=='0' ){
@@ -156,9 +163,11 @@ std::tuple<std::complex<double>, std::complex<double>> RzGate::accion(const char
 //HADAMARD GATE
 //
 //
-HGate::HGate( const int indice ): OneQubit(indice){};
+HGate::HGate( const int indice ): OneQubit(indice){
+  Operator::tag = "H";
+};
 
-HGate::~HGate(){std::cout<<"Destructor Hadamard"<<std::endl;};
+HGate::~HGate(){ };
 
 std::tuple<std::complex<double>, std::complex<double>> HGate::accion(const char flag, std::complex<double> prob1){
   //std::complex<double> i(0,1);
@@ -173,9 +182,11 @@ std::tuple<std::complex<double>, std::complex<double>> HGate::accion(const char 
 //X GATE
 //
 //
-XGate::XGate( const int indice ): OneQubit(indice){};
+XGate::XGate( const int indice ): OneQubit(indice){
+  Operator::tag = "X";
+};
 
-XGate::~XGate(){std::cout<<"Destructor Not gate"<<std::endl;};
+XGate::~XGate(){ };
 
 std::tuple<std::complex<double>, std::complex<double>> XGate::accion( const char flag, std::complex<double> prob1 ){
   return {0.0, prob1};
@@ -186,9 +197,11 @@ std::tuple<std::complex<double>, std::complex<double>> XGate::accion( const char
 //Z GATE
 //
 //
-ZGate::ZGate( const int indice ): OneQubit(indice){};
+ZGate::ZGate( const int indice ): OneQubit(indice){
+  Operator::tag = "Z";
+};
 
-ZGate::~ZGate(){std::cout<<"Destructor Z gate"<<std::endl;};
+ZGate::~ZGate(){ };
 
 std::tuple<std::complex<double>, std::complex<double>> ZGate::accion( const char flag, std::complex<double> prob1 ){
   if( flag=='0' ){
@@ -202,9 +215,11 @@ std::tuple<std::complex<double>, std::complex<double>> ZGate::accion( const char
 //Y GATE
 //
 //
-YGate::YGate( const int indice ): OneQubit(indice){};
+YGate::YGate( const int indice ): OneQubit(indice){
+  Operator::tag = "Y";
+};
 
-YGate::~YGate(){std::cout<<"Destructor Z gate"<<std::endl;};
+YGate::~YGate(){ };
 
 std::tuple<std::complex<double>, std::complex<double>> YGate::accion( const char flag, std::complex<double> prob1 ){
   std::complex<double> i(0,1);
@@ -221,9 +236,10 @@ std::tuple<std::complex<double>, std::complex<double>> YGate::accion( const char
 //
 RxGate::RxGate( const int indice, const double angle ): OneQubit(indice) { 
   (this->angle) = angle;
+  Operator::tag = "RX(" + std::to_string(angle) + ")";
 };
 
-RxGate::~RxGate(){std::cout<<"Destructor RxGate"<<std::endl;};
+RxGate::~RxGate(){ };
 
 std::tuple<std::complex<double>, std::complex<double>> RxGate::accion(const char flag, std::complex<double> prob1){
   std::complex<double> i(0,1);
@@ -238,9 +254,11 @@ std::tuple<std::complex<double>, std::complex<double>> RxGate::accion(const char
 //CNOT GATE
 //
 //
-CnotGate::CnotGate(const int indice1, const int indice2): TwoQubit(indice1, indice2){};
+CnotGate::CnotGate(const int indice1, const int indice2): TwoQubit(indice1, indice2){
+  Operator::tag = "CX(" + std::to_string(indice2) + ")";
+};
 
-CnotGate::~CnotGate(){std::cout<<"Destructor Cnot gate"<<std::endl;};
+CnotGate::~CnotGate(){ };
 
 std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> > 
   CnotGate::accion(const char flag1, const char flag2,  std::complex<double> prob){
@@ -259,9 +277,12 @@ std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, st
 //CZ GATE
 //
 //
-CZGate::CZGate(const int indice1, const int indice2): TwoQubit(indice1, indice2){};
+CZGate::CZGate(const int indice1, const int indice2): TwoQubit(indice1, indice2){
+  Operator::tag = "CZ(" + std::to_string(indice2) + ")";
 
-CZGate::~CZGate(){std::cout<<"Destructor CZ gate"<<std::endl;};
+};
+
+CZGate::~CZGate(){ };
 
 std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> > 
   CZGate::accion(const char flag1, const char flag2,  std::complex<double> prob){
@@ -280,9 +301,11 @@ std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, st
 //CY GATE
 //
 //
-CYGate::CYGate(const int indice1, const int indice2): TwoQubit(indice1, indice2){};
+CYGate::CYGate(const int indice1, const int indice2): TwoQubit(indice1, indice2){
+  Operator::tag = "CY(" + std::to_string(indice2) + ")";
+};
 
-CYGate::~CYGate(){std::cout<<"Destructor CY gate"<<std::endl;};
+CYGate::~CYGate(){ };
 
 std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> > 
   CYGate::accion(const char flag1, const char flag2,  std::complex<double> prob){
@@ -301,9 +324,11 @@ std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, st
 //CH GATE
 //
 //
-CHGate::CHGate(const int indice1, const int indice2): TwoQubit(indice1, indice2){};
+CHGate::CHGate(const int indice1, const int indice2): TwoQubit(indice1, indice2){
+  Operator::tag = "CH(" + std::to_string(indice2) + ")";
+};
 
-CHGate::~CHGate(){std::cout<<"Destructor CH gate"<<std::endl;};
+CHGate::~CHGate(){ };
 
 std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> > 
   CHGate::accion(const char flag1, const char flag2,  std::complex<double> prob){
@@ -323,10 +348,11 @@ std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, st
 //
 //
 CRXGate::CRXGate(const int indice1, const int indice2, const double angle): TwoQubit(indice1, indice2){
-  this->angle = angle;
+  (this->angle) = angle;
+  Operator::tag = "CRX(" + std::to_string(angle) + ","+ std::to_string(indice2) + ")";
 };
 
-CRXGate::~CRXGate(){std::cout<<"Destructor CRX gate"<<std::endl;};
+CRXGate::~CRXGate(){ };
 
 std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> > 
   CRXGate::accion(const char flag1, const char flag2,  std::complex<double> prob){
@@ -351,10 +377,11 @@ std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, st
 //
 //
 CRYGate::CRYGate(const int indice1, const int indice2, const double angle): TwoQubit(indice1, indice2){
-  this->angle = angle;
+  (this->angle) = angle;
+  Operator::tag = "CRY(" + std::to_string(angle) + ","+ std::to_string(indice2) + ")";
 };
 
-CRYGate::~CRYGate(){std::cout<<"Destructor CRY gate"<<std::endl;};
+CRYGate::~CRYGate(){ };
 
 std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> > 
   CRYGate::accion(const char flag1, const char flag2,  std::complex<double> prob){
@@ -379,10 +406,11 @@ std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, st
 //
 //
 CRZGate::CRZGate(const int indice1, const int indice2, const double angle): TwoQubit(indice1, indice2){
-  this->angle = angle;
+  (this->angle) = angle;
+  Operator::tag = "CRZ(" + std::to_string(angle) + ","+ std::to_string(indice2) + ")";
 };
 
-CRZGate::~CRZGate(){std::cout<<"Destructor CRZ gate"<<std::endl;};
+CRZGate::~CRZGate(){ };
 
 std::tuple< std::complex<double>, std::complex<double>, std::complex<double>, std::complex<double> > 
   CRZGate::accion(const char flag1, const char flag2,  std::complex<double> prob){
